@@ -49,31 +49,20 @@ Each experiment in this repository represents **one step in this cycle**.
 ---
 
 ## 📁 Project Structure
-
-NLP-Learning-Cycle/
-
+NLP/
 │
 ├── data/
-│ └── smalldataset/
-│ └── load_imdb.py
+│   └── smalldataset/
+│       └── load_imdb.py
 │
 ├── models/
-│ ├── rnn.py
-│ ├── lstm.py
-│ └── transformer.py
+│   └── rnn.py
 │
 ├── experiments/
-│ ├── exp1_rnn_small.py
-│ ├── exp2_rnn_long.py
-│ ├── exp3_lstm.py
-│ └── exp4_transformer.py
+│   └── exp1_rnn_small.py
 │
 ├── main.py
 └── README.md
-
-
----
-
 ## 📊 Dataset
 
 **IMDb Movie Reviews Dataset**  
@@ -92,19 +81,12 @@ The dataset is loaded using `torchtext` to keep preprocessing simple and reprodu
 
 ## 🧪 Experiments Description
 
-### 🔹 Experiment 1: RNN with Small Dataset
-**File:** `exp1_rnn_small.py`
+### Experiment 1 – RNN (Small Dataset)
+- IMDb reviews
+- Truncated sequences
+- Shows that vanilla RNN can appear effective
 
-- Small subset of IMDb
-- Short sequence length
-- Purpose: Show that RNN can appear to work well
-
-Expected outcome:
-- Training is stable
-- Loss decreases
-- Model seems successful
-
-> ⚠️ This success is intentionally misleading.
+⚠️ This setup is intentionally simplified and not realistic.
 
 ---
 
