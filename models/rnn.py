@@ -1,4 +1,4 @@
-
+import torch.nn as nn
 
 class RNNClassifier(nn.Module):
     def __init__(self, vocab_size, embed_dim=64, hidden_dim=128):

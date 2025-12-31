@@ -1,44 +1,41 @@
-from torchtext.datasets import IMDB
-from torchtext.data.utils import get_tokenizer
-from collections import Counter
+import pandas as pd
 import torch
+from collections import Counter
 
-
-
-def load_imdb_data(max_length=50):
-    tokenizer = get_tokenizer("basic_english")
-
-    train_iter, test_iter = IMDB()
+def load_imdb_csv(csv_path, max_samples = 2000, max_length = 50):
+    df = pd.read_csv(csv_path)
 
     texts = []
     labels = []
 
-    for label, text in train_iter:
-        tokens = tokenizer(text)[:max_length]
+    for i, row in df.iterrows():
+        if i >= max_samples:
+            break
+
+        tokens = row['review'].lower().split()[:max_length]
         texts.append(tokens)
-        labels.append(1 if label == 'pos' else 0)
 
-    return texts, labels
+        labels.append(1 if row['sentiment'] == "pos" else 0)
 
-
-
-def build_vocab(token_lists):
-    counter = Counter()
-    for tokens in token_lists:
-        counter.update(tokens)
-
-    vocab = {word: i + 1 for i, word in enumerate(counter.keys())}
-    vocab["<PAD>"] = 0
-    return vocab
-
-
+    return texts, torch.tensor(labels, dtype=torch.float)
 
 def build_vocab(token_lists):
     counter = Counter()
+
     for tokens in token_lists:
         counter.update(tokens)
 
-    vocab = {word: i + 1 for i, word in enumerate(counter.keys())}
-    vocab["<PAD>"] = 0
+        vocab = {word: 1+i for i, word in enumerate(counter.keys())}
+        vocab["<PAD>"] = 0
     return vocab
+
+def encode_and_pad(texts, vocab, max_length):
+    encoded =[]
+    for tokens in texts:
+        seq = [vocab.get(tok,0) for tok in tokens ]
+        seq += [0] * (max_length - len(seq))
+        encoded.append(seq)
+
+
+    return torch.tensor(encoded, dtype=torch.long)
 
