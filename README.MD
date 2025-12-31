@@ -35,8 +35,8 @@ The preprocessing is intentionally simple.
 
 ### Setup
 - Model: Vanilla RNN
-- Dataset size: 2000 samples
-- Sequence length: 50 words
+- Dataset size: 5000 samples
+- Sequence length: 100 words
 - Task: Sentiment classification
 
 ### Goal
@@ -49,11 +49,11 @@ This setup hides the weaknesses of RNNs on purpose.
 
 ### Result (example run)
 
-Epoch [1/5] | Loss: 0.7165 | Accuracy: 0.4435
-Epoch [2/5] | Loss: 0.6693 | Accuracy: 0.6225
-Epoch [3/5] | Loss: 0.6231 | Accuracy: 0.7510
-Epoch [4/5] | Loss: 0.5759 | Accuracy: 0.8495
-Epoch [5/5] | Loss: 0.5256 | Accuracy: 0.9100
+Epoch [1/5] | Loss: 0.7528 | Accuracy: 0.2748
+Epoch [2/5] | Loss: 0.7038 | Accuracy: 0.4934
+Epoch [3/5] | Loss: 0.6599 | Accuracy: 0.6198
+Epoch [4/5] | Loss: 0.6191 | Accuracy: 0.7186
+Epoch [5/5] | Loss: 0.5794 | Accuracy: 0.7900
 
 ### Observation
 - Accuracy increases quickly
@@ -61,3 +61,16 @@ Epoch [5/5] | Loss: 0.5256 | Accuracy: 0.9100
 - This creates a **false sense of success**, which is intentional
 
 ---
+## Experiment 2 – RNN with Long Sequences
+
+**Change:** Sequence length increased to 300 words  
+**Model:** Same RNN as Experiment 1
+
+### Observation
+- Accuracy drops or becomes unstable
+- Training becomes harder
+- RNN struggles to remember long-term dependencies
+
+### Conclusion
+RNNs do not scale well with long sequences.
+This motivates the use of LSTM.
