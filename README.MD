@@ -67,10 +67,10 @@ Epoch [5/5] | Loss: 0.5794 | Accuracy: 0.7900
 **Model:** Same RNN as Experiment 1
 
 ### Observation
-- Accuracy drops or becomes unstable
-- Training becomes harder
-- RNN struggles to remember long-term dependencies
 
-### Conclusion
-RNNs do not scale well with long sequences.
-This motivates the use of LSTM.
+RNN did not fail immediately on long sequences.
+This is expected because:
+- IMDB sentiment classification relies on local cues
+- The task does not require deep long-term dependency modeling
+
+To expose RNN limitations, longer sequences and more complex tasks are required.

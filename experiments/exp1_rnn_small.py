@@ -8,6 +8,7 @@ from data.smalldataset.load_imdb import (
     encode_and_pad
 )
 from models.rnn import RNNClassifier
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def run_experiment():
@@ -18,7 +19,7 @@ def run_experiment():
 
     EMBED_DIM = 64
     HIDDEN_DIM = 128
-    EPOCHS = 5
+    EPOCHS = 10
     LR = 0.001
 
     # 2.Load & Prepare Data
@@ -29,6 +30,9 @@ def run_experiment():
     )
     vocab = build_vocab(texts)
     X = encode_and_pad(texts, vocab, MAX_LENGTH)
+    X_tensor = torch.tensor(X, dtype=torch.long).to(device)
+    y_tensor = torch.tensor(labels, dtype=torch.float).to(device)
+
 
     # 3.Model, Loss, Optimizer
 
@@ -36,23 +40,25 @@ def run_experiment():
         vocab_size=len(vocab),
         embed_dim=EMBED_DIM,
         hidden_dim=HIDDEN_DIM
-    )
+    ).to(device)
     criterion = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(model.parameters(), lr=LR)
 
-     # 4.Training Loop
+     # 4.Training 
+    print(f"Training on device: {device}")
+
     for epoch in range(EPOCHS):
         optimizer.zero_grad()
 
-        outputs = model(X).squeeze()
-        loss = criterion(outputs, labels)
+        outputs = model(X_tensor).squeeze()
+        loss = criterion(outputs, y_tensor)
 
         loss.backward()
         optimizer.step()
 
         # Accuracy
         preds = (torch.sigmoid(outputs) > 0.5).float()
-        acc = (preds == labels).float().mean()
+        acc = (preds == y_tensor).float().mean()
 
         print(
             f"Epoch [{epoch+1}/{EPOCHS}] | "

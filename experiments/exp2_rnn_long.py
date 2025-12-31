@@ -9,7 +9,7 @@ from data.smalldataset.load_imdb import (
 )
 from models.rnn import RNNClassifier
 
-
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def run_experiment():
     # 1.Experiment Configuration
     CSV_PATH = "data\data\imdb\IMDB Dataset.csv"
@@ -29,6 +29,8 @@ def run_experiment():
     )
     vocab = build_vocab(texts)
     X = encode_and_pad(texts, vocab, MAX_LENGTH)
+    X_tensor = torch.tensor(X, dtype=torch.long).to(device)
+    y_tensor = torch.tensor(labels, dtype=torch.float).to(device)
 
     # 3.Model, Loss, Optimizer
 
@@ -44,15 +46,15 @@ def run_experiment():
     for epoch in range(EPOCHS):
         optimizer.zero_grad()
 
-        outputs = model(X).squeeze()
-        loss = criterion(outputs, labels)
+        outputs = model(X_tensor).squeeze()
+        loss = criterion(outputs, y_tensor)
 
         loss.backward()
         optimizer.step()
 
         # Accuracy
         preds = (torch.sigmoid(outputs) > 0.5).float()
-        acc = (preds == labels).float().mean()
+        acc = (preds == y_tensor).float().mean()
 
         print(
             f"Epoch [{epoch+1}/{EPOCHS}] | "
