@@ -74,3 +74,15 @@ This is expected because:
 - The task does not require deep long-term dependency modeling
 
 To expose RNN limitations, longer sequences and more complex tasks are required.
+## Experiment 3 – LSTM with Long Sequences
+
+In this experiment, the vanilla RNN is replaced by an LSTM
+while keeping all other settings unchanged.
+
+### Observation
+- Training is more stable compared to RNN
+- Accuracy fluctuations are reduced
+- LSTM handles long sequences more reliably
+
+This confirms the effectiveness of gating mechanisms
+in mitigating the vanishing gradient problem.
