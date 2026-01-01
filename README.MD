@@ -1,88 +1,20 @@
-# NLP Learning Cycle
+### WikiText-2 Data Loader
 
-A practical NLP project to understand sequence models step by step
-by experimenting with real data and simple architectures.
+A new data loader was added to support language modeling experiments
+using the WikiText-2 dataset.
 
-The focus is on **learning and observation**, not achieving the best accuracy.
+Unlike the IMDb dataset, WikiText-2 does not contain labels.
+Instead, the task is to predict the next word given a sequence of
+previous words.
 
----
+The loader performs the following steps:
+- Reads raw text files
+- Splits text into tokens (words)
+- Builds a vocabulary mapping words to integer IDs
+- Encodes the token stream into numerical form
+- Creates input–target pairs using a sliding window
 
-
----
-
-## Dataset
-
-**IMDb Movie Reviews Dataset (CSV)**
-
-- Real movie reviews
-- Binary sentiment labels:
-  - positive
-  - negative
-- Loaded from a CSV file
-
-Basic preprocessing is applied:
-- lowercase
-- word splitting
-- sequence truncation
-
-The preprocessing is intentionally simple.
-
----
-
-## Experiment 1 – RNN with Small Dataset
-
-**File:** `experiments/exp1_rnn_small.py`
-
-### Setup
-- Model: Vanilla RNN
-- Dataset size: 5000 samples
-- Sequence length: 100 words
-- Task: Sentiment classification
-
-### Goal
-To show that a simple RNN can achieve **reasonable accuracy**
-when:
-- the dataset is small
-- sequences are short
-
-This setup hides the weaknesses of RNNs on purpose.
-
-### Result (example run)
-
-Epoch [1/5] | Loss: 0.7528 | Accuracy: 0.2748
-Epoch [2/5] | Loss: 0.7038 | Accuracy: 0.4934
-Epoch [3/5] | Loss: 0.6599 | Accuracy: 0.6198
-Epoch [4/5] | Loss: 0.6191 | Accuracy: 0.7186
-Epoch [5/5] | Loss: 0.5794 | Accuracy: 0.7900
-
-### Observation
-- Accuracy increases quickly
-- The model appears to work well
-- This creates a **false sense of success**, which is intentional
-
----
-## Experiment 2 – RNN with Long Sequences
-
-**Change:** Sequence length increased to 300 words  
-**Model:** Same RNN as Experiment 1
-
-### Observation
-
-RNN did not fail immediately on long sequences.
-This is expected because:
-- IMDB sentiment classification relies on local cues
-- The task does not require deep long-term dependency modeling
-
-To expose RNN limitations, longer sequences and more complex tasks are required.
-## Experiment 3 – LSTM with Long Sequences
-
-In this experiment, the vanilla RNN is replaced by an LSTM
-while keeping all other settings unchanged.
-
-### Observation
-- Training is more stable compared to RNN
-- Accuracy fluctuations are reduced
-- LSTM handles long sequences more reliably
-
-This confirms the effectiveness of gating mechanisms
-in mitigating the vanishing gradient problem.
+This change allows the same learning cycle
+(RNN → LSTM → long sequences)
+to be applied to a more challenging and realistic NLP task,
+preparing the project for future work with Transformer-based models.
