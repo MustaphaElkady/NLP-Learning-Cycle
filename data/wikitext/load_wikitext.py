@@ -14,17 +14,12 @@ def load_wikitext(path, max_tokens=None):
     return tokens 
 
 
-
-
-
-
 def build_vocab(tokens):
     counter = Counter()
     vocab = {word: 1+i for i, word in enumerate(counter.keys())}
     vocab["<PAD>"] = 0
     vocab["<UNK>"] = len(vocab)
     return vocab
-
 
 
 def encode(tokens, vocab):
@@ -39,6 +34,8 @@ def encode(tokens, vocab):
         #         encoded.append(vocab["<UNK>"])
 
     return torch.tensor(encoded, dtype=torch.long)
+
+
 
 def create_sequences(encoded, seq_len):
 
