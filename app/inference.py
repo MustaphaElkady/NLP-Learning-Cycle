@@ -5,7 +5,7 @@ import torch
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def load_model_and_vocab(model_type):
+def load_model_and_vocab(model_type, dataset_path):
     config = MODEL_CONFIG[model_type]
     vocab = torch.load(config["vocab_path"],map_location=device )
     model_class = MODEL_REGISTRY[model_type]

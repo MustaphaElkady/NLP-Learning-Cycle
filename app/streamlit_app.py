@@ -1,51 +1,49 @@
-# UI
-# ↓
-# call inference
-# ↓
-# display results
 import streamlit as st
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from inference import load_model_and_vocab, predict_next_word
 
+st.header("NLP Learning Sycle")
+model_type = st.selectbox("Choose Model", ["RNN","LSTM","TRANSFORMER"])
+sentence = st.text_input("Enter sentence")
 
 DATASET_DIR = "data/datasets"
 os.makedirs(DATASET_DIR, exist_ok=True)
+uploaded_file = st.sidebar.file_uploader(
+    "Upload Dataset",
+    type=["txt"]
+)
+if uploaded_file is not None:
+    save_path = os.path.join(DATASET_DIR, uploaded_file.name)
+    with open(save_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+    st.sidebar.success("Dataset uploaded successfully")
 
-# 001
-dataset_files = [
+dataset_files = [ # 001
     f for f in os.listdir(DATASET_DIR)
     if f.endswith(".txt")
 ]
 
+dataset_selected = st.sidebar.selectbox(
+    "Choose Dataset",
+    dataset_files
+) 
 
-# select model and dataset
-st.header("NLP Learning Sycle")
-
-st.sidebar.title("Configrations")
-
-model_type = st.selectbox("Choose Model",["RNN", "LSTM", "TRANSFORMER"])
-dataset_type = st.sidebar.selectbox("Select dataset",dataset_files) # 001
-sentence = st.text_input("Enter sentence to test the model")
-
+dataset_path = os.path.join(DATASET_DIR, dataset_selected)
 
 # TESt model 
 if st.button("Test Model"):
     with st.spinner("computing..."):
-        model, vocab = load_model_and_vocab(model_type)
+        model, vocab = load_model_and_vocab(model_type, dataset_selected)
         word = predict_next_word(model,vocab,sentence)
         st.success(f"Output: {word}")
 
 
 
-uploaded_file = st.sidebar.file_uploader(
-    "Upload Dataset",
-    type=["txt"]
-)
 
-if uploaded_file is not None:
-
-    text = uploaded_file.read().decode("utf-8")
-
-    st.sidebar.write("Dataset Loaded ✅")
+# UI
+# ↓
+# call inference
+# ↓
+# display results
