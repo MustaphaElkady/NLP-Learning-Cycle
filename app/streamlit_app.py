@@ -15,4 +15,4 @@ sentence = st.text_input("Enter sentence to test the model")
 if st.button("Test Model"):
     model, vocab = load_model_and_vocab(model_type)
     word = predict_next_word(model,vocab,sentence)
-    st.success("Output: {word}")
+    st.success(f"Output: {word}")

@@ -6,9 +6,9 @@ MODEL_CONFIG = {
         "model_path" : "checkpoints/rnn_wikitext.pt",
         "vocab_path" : "checkpoints/vocab.pt",
          "model_params": {
-            "vocab_size": 10000,
-            "embed_dim": 128,
-            "hidden_dim": 256,
+            "vocab_size": 2000,
+            "embed_dim": 64,
+            "hidden_dim": 128,
             "num_layers": 2
         }
     },
@@ -17,9 +17,9 @@ MODEL_CONFIG = {
         "model_path" : "checkpoints/lstm_wikitext.pt",
         "vocab_path" : "checkpoints/vocab_lstm.pt",
          "model_params": {
-            "vocab_size": 10000,
-            "embed_dim": 128,
-            "hidden_dim": 256,
+            "vocab_size": 2000,
+            "embed_dim": 64,
+            "hidden_dim": 128,
             "num_layers": 2
         }
     },
