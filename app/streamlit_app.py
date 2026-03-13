@@ -3,13 +3,22 @@
 # call inference
 # ↓
 # display results
-
-
 import streamlit as st
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from inference import load_model_and_vocab, predict_next_word
+
+
+DATASET_DIR = "data/datasets"
+os.makedirs(DATASET_DIR, exist_ok=True)
+
+# 001
+dataset_files = [
+    f for f in os.listdir(DATASET_DIR)
+    if f.endswith(".txt")
+]
+
 
 # select model and dataset
 st.header("NLP Learning Sycle")
@@ -17,7 +26,7 @@ st.header("NLP Learning Sycle")
 st.sidebar.title("Configrations")
 
 model_type = st.selectbox("Choose Model",["RNN", "LSTM", "TRANSFORMER"])
-dataset_type = st.selectbox("Select dataset size", ["small", "BIG dataset"])
+dataset_type = st.sidebar.selectbox("Select dataset",dataset_files) # 001
 sentence = st.text_input("Enter sentence to test the model")
 
 
