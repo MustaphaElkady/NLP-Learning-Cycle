@@ -1,0 +1,1 @@
+from .inference import load_model_and_vocab, predict_next_word
