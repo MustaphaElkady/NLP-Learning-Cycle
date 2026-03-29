@@ -6,26 +6,24 @@ from data.wikitext.load_wikitext import *
 from models.transformer import TransformerLanguageModel
 import os
 
-def run_experiment():
+def run_experiment(dataset_path, dataset_selected, seq_len, max_tokens, epochs, lr):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(device)
-    SEQ_LEN = 1000
-    MAX_TOKENS = 20000
 
-    tokens = load_wikitext("data/wikitext/wikitext-2/train.txt", MAX_TOKENS)
+    tokens = load_wikitext(dataset_path, max_tokens)
     vocab = build_vocab(tokens)
     encoded = encode(tokens, vocab)
     # X, y = create_sequences(encoded, SEQ_LEN)
 
     model = TransformerLanguageModel(len(vocab)).to(device)
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr=lr)
 
-    for epoch in range(5):
+    for epoch in range(epochs):
         total_loss = 0
         steps = 0
 
-        for X_seq, y_seq in create_sequences(encoded, SEQ_LEN):
+        for X_seq, y_seq in create_sequences(encoded, seq_len):
             X_seq = X_seq.unsqueeze(0).to(device)   # batch = 1
             y_seq = torch.tensor([y_seq]).to(device)
 
@@ -42,5 +40,6 @@ def run_experiment():
     print("Saving Transformer checkpoints...")
 
     os.makedirs("checkpoints", exist_ok=True)
-    torch.save(model.state_dict(), "checkpoints/trans_wikitext.pt")
-    torch.save(vocab, "checkpoints/vocab_trans.pt")
+    torch.save(model.state_dict(), f"checkpoints/trans_{dataset_selected}.pt")
+    torch.save(vocab, f"checkpoints/vocab_trans_{dataset_selected}.pt")
+    return model, vocab

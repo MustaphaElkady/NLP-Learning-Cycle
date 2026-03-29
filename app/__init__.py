@@ -1,1 +1,2 @@
 from .inference import load_model_and_vocab, predict_next_word
+from ..experiments.experiments_registry import EXPERIMENT_REGISTRY
