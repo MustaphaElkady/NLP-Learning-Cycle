@@ -7,7 +7,7 @@ def load_wikitext(path, max_tokens=None):
         text = f.read()
 
     # Simple tokenization by whitespace
-    tokens = text.split()
+    tokens = preprocess(text) #0010
     
     if max_tokens:
         tokens = tokens[:max_tokens]
@@ -48,3 +48,6 @@ def create_sequences(encoded, seq_len):
         X_seq = encoded[i : i + seq_len]
         y_seq = encoded[i + seq_len]
         yield X_seq, y_seq
+
+def preprocess(text: str) -> list[str]: #0010
+    text = remove_wikitext
